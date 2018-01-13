@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem 'rake'
-
 gem 'json'
-gem 'sinatra', require: 'sinatra'
+gem 'mini_magick'
+gem 'rake'
+gem 'sinatra', '1.4.7', require: 'sinatra' # dh :(

@@ -13,3 +13,18 @@ get '/hello-world.json' do
   # Use to_json to generate JSON based on the Ruby hash
   {greeting: 'Hello World!'}.to_json
 end
+
+
+# existing pages
+get '/index' do
+end
+
+get '/home' do
+end
+
+get '/about' do
+end
+
+get '/admin-update' do
+  # can we resize images on dh?
+end
