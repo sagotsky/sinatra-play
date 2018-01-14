@@ -3,19 +3,24 @@ require 'bundler'
 require 'pry'
 Bundler.require
 
-# By default Sinatra will return the string as the response.
 get '/' do
   @carousel_images = ImageFinder.new('images/carousel', 740, 2000).thumbs_and_full
-  erb :index#, carousel_images: images
+  @body_class = 'home'
+
+  erb :index
 end
 
 # can we list files?
 get '/gallery' do
-  # Dir['images/*'].to_s
+  @gallery_images = ImageFinder.new('images/gallery', 250, 2000).thumbs_and_full
+  @body_class = 'gallery'
+
   erb :gallery
 end
 
 get '/about' do
+  @body_class = 'about'
+
   erb :about
 end
 

@@ -70,8 +70,8 @@ body.gallery .page-content img:hover {
 /* how to add a class to page... */
 body.home a.page-link[href$='/index.html'],
 body.home a.page-link[href='/'],
-body.gallery a.page-link[href$='/gallery/'],
-body.about a.page-link[href$='/about/'] {
+body.gallery a.page-link[href$='/gallery'],
+body.about a.page-link[href$='/about'] {
   background-color: #666;
   color: white;
   border: 10px #666 solid;
