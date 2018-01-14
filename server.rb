@@ -1,5 +1,6 @@
 # Requires the Gemfile
 require 'bundler'
+require 'pry'
 Bundler.require
 
 # By default Sinatra will return the string as the response.
@@ -16,6 +17,14 @@ end
 
 get '/about' do
   erb :about
+end
+
+get '/test' do
+  output = "before: #{Time.now}"
+  ImageUpdateManager.new('inbox/', '_resized').update
+  output << "after: #{Time.now}"
+
+  output
 end
 
 class ImageFinder
@@ -47,21 +56,88 @@ class ImageFinder
   end
 
   def thumbs
-    sub = "#{@thumb_size}x#{@thumb_size}"
-    Dir["#{public_dir}/#{sub}/*"].map do |file|
+    Dir["#{public_dir}/#{@thumb_size}/*"].map do |file|
       file.gsub /^public\//, ''
     end.sort
   end
 
   def fulls
-    sub = "#{@full_size}x#{@full_size}"
-    Dir["#{public_dir}/#{sub}/*"].map do |file|
+    Dir["#{public_dir}/#{@full_size}/*"].map do |file|
       file.gsub /^public\//, ''
     end.sort
   end
 
   def filename(file)
     file.split('/').last
+  end
+end
+
+class ImageResizer
+  def self.resize_all(in_dir, out_dir, *resolutions)
+    new(in_dir, out_dir, *resolutions).resize_all
+  end
+
+  def initialize(in_dir, out_dir, *resolutions)
+    @in_dir = in_dir
+    @out_dir = out_dir
+    @resolutions = resolutions
+  end
+
+  def resize_all
+    images.each do |file|
+      image = MiniMagick::Image.open(file)
+      @resolutions.each do |res|
+        puts "#{file}: #{res}"
+        image.resize(res)
+        image.write destination(res, file)
+      end
+    end
+  end
+
+  private
+
+  def images
+    Dir["#{@in_dir}/*.jpg"]
+  end
+
+  def destination(res, file)
+    dir = File.join(@out_dir, res.to_s)
+    FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
+
+    filename = file.split('/').last
+    File.join dir, filename
+  end
+end
+
+
+# runs resizer, then swaps in output
+class ImageUpdateManager
+  IMAGE_DIRS = {
+    gallery:  [2000, 250],
+    carousel: [2000, 740]
+  }.freeze
+
+  def initialize(source, dest)
+    @source = source
+    @dest = "#{dest}/#{Time.now.to_i}"
+    @public_images = 'public/images'
+  end
+
+  def update
+    resize_images
+    symlink_new_images
+  end
+
+  private
+
+  def resize_images
+    IMAGE_DIRS.each do |name, resolutions|
+      ImageResizer.resize_all "#{@source}/#{name}", "#{@dest}/#{name}", *resolutions
+    end
+  end
+
+  def symlink_new_images
+    FileUtils.ln_sf File.join('..', @dest), @public_images
   end
 end
 

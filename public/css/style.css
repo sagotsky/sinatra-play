@@ -48,7 +48,7 @@ body.gallery .page-content img:hover {
 }
 
 
-  
+
 .site-nav a {
   font-family: Delius;
 }
@@ -114,25 +114,25 @@ header > .wrapper > .site-nav {
 .site-title {
   /* font-family: Stalemate; */
   font-family: Delius;
-  font-size: 185%; 
-  font-size: 2vw; 
+  font-size: 185%;
+  font-size: 2vw;
 }
 
 @media screen and (min-width: 1001px) {
   .site-title {
-    font-size: 185%; 
+    font-size: 185%;
   }
 }
 
 @media screen and (max-width: 1000px) {
   .site-title {
-    font-size: 3vw; 
+    font-size: 3vw;
   }
 }
 
 @media screen and (max-width: 600px) {
   .site-title {
-    font-size: 200%; 
+    font-size: 200%;
   }
 }
 
