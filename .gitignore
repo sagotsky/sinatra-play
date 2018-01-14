@@ -1,5 +1,5 @@
-images/*/*
-!images/*/.keep
+public/images/*/*
+!public/images/*/.keep
 
 tags*
 

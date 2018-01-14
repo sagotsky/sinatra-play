@@ -1,1 +1,5 @@
-index
+<div class="home carousel">
+  <% @carousel_images.each do |thumb, full| %>
+    <%= erb :carousel_image, locals: {thumb: thumb, full: full} %>
+  <% end %>
+</div>
