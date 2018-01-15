@@ -93,7 +93,7 @@ class ImageResizer
       image = MagickWrapper.new(file)
       @resolutions.each do |res|
         puts "#{file}: #{res}"
-        image.resize(width: res)
+        image.resize(res)
         image.write destination(res, file)
       end
     end
