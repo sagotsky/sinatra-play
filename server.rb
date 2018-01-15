@@ -3,6 +3,12 @@ require 'bundler'
 require 'pry'
 Bundler.require
 
+# set :environment, :development
+# configure :development do
+#   enable :logging, :dump_errors, :raise_errors
+# end
+
+
 get '/' do
   @carousel_images = ImageFinder.new('images/carousel', 740, 2000).thumbs_and_full
   @body_class = 'home'
