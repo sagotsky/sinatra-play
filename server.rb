@@ -121,9 +121,9 @@ class MagickWrapper
     @cli_opts = {}
   end
 
-  def resize(width: nil, height: nil)
-    raise 'error: specify width, height, or both' if width.nil? && height.nil?
-    @cli_opts[:geometry] = [width, 'x', height].join
+  # can't use kwargs - dh is stuck on 1.9
+  def resize(width)
+    @cli_opts[:geometry] = width + 'x'
     self
   end
 
