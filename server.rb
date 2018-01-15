@@ -10,7 +10,6 @@ get '/' do
   erb :index
 end
 
-# can we list files?
 get '/gallery' do
   @gallery_images = ImageFinder.new('images/gallery', 250, 2000).thumbs_and_full
   @body_class = 'gallery'
@@ -31,6 +30,7 @@ get '/test' do
 
   output
 end
+
 
 class ImageFinder
   # maybe thumb, full could be *resolution and this returns whatever resolutions were specified in that order?
@@ -131,6 +131,7 @@ class ImageUpdateManager
   def update
     resize_images
     symlink_new_images
+    clear_incoming_images
   end
 
   private
@@ -143,6 +144,12 @@ class ImageUpdateManager
 
   def symlink_new_images
     FileUtils.ln_sf File.join('..', @dest), @public_images
+  end
+
+  def clear_incoming_images
+    IMAGE_DIRS.each do |name, _|
+      FileUtils.rm File.join(@source, name, '*')
+    end
   end
 end
 
