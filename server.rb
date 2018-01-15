@@ -90,10 +90,10 @@ class ImageResizer
 
   def resize_all
     images.each do |file|
-      image = MiniMagick::Image.open(file)
+      image = MagickWrapper.new(file)
       @resolutions.each do |res|
         puts "#{file}: #{res}"
-        image.resize(res)
+        image.resize(width: res)
         image.write destination(res, file)
       end
     end
@@ -111,6 +111,30 @@ class ImageResizer
 
     filename = file.split('/').last
     File.join dir, filename
+  end
+end
+
+# wraps a tiny amount of /usr/bin/convert
+class MagickWrapper
+  def initialize(file)
+    @file = file
+    @cli_opts = {}
+  end
+
+  def resize(width: nil, height: nil)
+    raise 'error: specify width, height, or both' if width.nil? && height.nil?
+    @cli_opts[:geometry] = [width, 'x', height].join
+    self
+  end
+
+  def write(output)
+    opts = @cli_opts.each_with_object('') do |(k, v), opts|
+      opts << "-#{k} #{v}"
+    end
+
+    cmd = "convert #{opts} #{@file} #{output}"
+
+    system(cmd)
   end
 end
 
