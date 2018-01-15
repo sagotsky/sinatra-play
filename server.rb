@@ -129,7 +129,7 @@ class MagickWrapper
 
   # can't use kwargs - dh is stuck on 1.9
   def resize(width)
-    @cli_opts[:geometry] = width + 'x'
+    @cli_opts[:geometry] = "#{width}x"
     self
   end
 
