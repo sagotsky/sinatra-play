@@ -148,7 +148,8 @@ class ImageUpdateManager
 
   def clear_incoming_images
     IMAGE_DIRS.each do |name, _|
-      FileUtils.rm File.join(@source, name, '*')
+      files = Dir[File.join(@source, name.to_s, '*')]
+      FileUtils.rm files
     end
   end
 end
