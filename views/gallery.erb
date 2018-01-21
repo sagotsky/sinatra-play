@@ -1,5 +1,5 @@
 <div class="home gallery">
-  <% @gallery_images.each do |thumb, full| %>
-    <%= erb :gallery_image, locals: {thumb: thumb, full: full} %>
+  <% @gallery_images.each do |img| %>
+    <%= erb :gallery_image, locals: {thumb: img[:thumb], full: img[:full]} %>
   <% end %>
 </div>

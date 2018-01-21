@@ -1,5 +1,5 @@
 <div class="home carousel">
-  <% @carousel_images.each do |thumb, full| %>
-    <%= erb :carousel_image, locals: {thumb: thumb, full: full} %>
+  <% @carousel_images.each do |img| %>
+    <%= erb :carousel_image, locals: {thumb: img[:thumb], full: img[:full]} %>
   <% end %>
 </div>
