@@ -52,7 +52,8 @@ end
 # maybe that page could post the dest each time?
 # or maybe it could loop over originals and skip items that were converted?
 get '/admin' do
-  @image_inbox = ImageInbox.new('inbox/gallery', '_resized/gallery', 250, 2000)
+  # @image_inbox = ImageInbox.new('inbox/gallery', '_resized/gallery', 250, 2000)
+  @image_inbox = ImageInbox.new('inbox/gallery', ImageCollections.gallery)
 
   erb :admin
 end
@@ -60,15 +61,13 @@ end
 get '/admin/image-inbox.json' do
   content_type :json
 
-  @gallery_inbox = ImageInbox.new('inbox/gallery', '_resized/gallery', 250, 2000)
-  @carousel_inbox = ImageInbox.new('inbox/carousel', '_resized/carousel', 740, 2000)
-  binding.pry
+  # @gallery_inbox = ImageInbox.new('inbox/gallery', '_resized/gallery', 250, 2000)
+  # @carousel_inbox = ImageInbox.new('inbox/carousel', '_resized/carousel', 740, 2000)
 
-  @gallery_inbox.ls.each_with_object({}) do |filename, done|
+  @gallery_inbox =  ImageInbox.new('inbox/gallery', ImageCollections.gallery)
+  @carousel_inbox = ImageInbox.new('inbox/carousel', ImageCollections.carousel)
 
-  end
-
-  {}.to_json
+  [@gallery_inbox, @carousel_inbox].map(&:to_h).reduce(&:merge).to_json
 end
 
 post '/admin/resize-image.json' do

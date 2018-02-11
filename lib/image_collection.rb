@@ -17,6 +17,18 @@ class ImageCollection
     end.values # would the filename key be valuable?
   end
 
+  # For each filename in collection, return min mtime
+  def file_names_mtimes
+    group_by_resolution.each_with_object({}) do |images, hash|
+      name  = filename(images.values.first)
+      mtime = images.values.map do |image|
+        File.mtime('public/' + image)
+      end.min
+
+      hash[name] = mtime
+    end
+  end
+
   private
 
   def resolution_labels
